@@ -1,0 +1,26 @@
+/* DuesPage.css */
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.card {
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  background-color: white;
+}
+
+.table th {
+  background-color: #f8f9fa;
+}
+
+.btn-success {
+  transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

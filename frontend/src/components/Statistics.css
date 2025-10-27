@@ -1,0 +1,80 @@
+.statistics-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 20px 0;
+    width: 100%;
+  }
+  
+  .statistics-cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+    width: 100%;
+  }
+  
+  .statistics-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(24% - 15px);
+    margin-right: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .statistics-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .error-message {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-number {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .card-label {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .card-icon {
+  font-size: 28px;
+  color: #F75866;
+}
+
+.view-details-btn {
+  background-color: transparent;
+  border: none;
+  color: #007bff;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.view-details-btn:hover {
+  color: #0056b3;
+}
+  

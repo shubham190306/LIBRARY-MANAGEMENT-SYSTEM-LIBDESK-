@@ -1,0 +1,148 @@
+.greeting-card {
+    background-color: transparent;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.greeting-card .user-name {
+    color:#F75866;
+}
+
+.greeting-card p{
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.greeting-card h5{
+    font-weight: 650;
+    font-size: 35px;
+}
+
+.library-info-container {
+    background-color: #ffffff;
+    padding: 20px 25px;
+    border-radius: 12px;
+    border-left: 5px solid #F75866;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.library-info-container:hover {
+    box-shadow: 0 6px 16px rgba(247, 88, 102, 0.15);
+    transform: translateY(-2px);
+}
+
+.newly-added-books h6 {
+    margin: 0 0 18px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    position: relative;
+    padding-left: 12px;
+}
+
+.newly-added-books h6::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 18px;
+    background: linear-gradient(to bottom, #F75866, #ff8a94);
+    border-radius: 2px;
+}
+
+.book-catalog {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 5px 0 15px 0;
+    scrollbar-width: thin;
+    scrollbar-color: #F75866 #f0f0f0;
+}
+
+.book-catalog::-webkit-scrollbar {
+    height: 6px;
+}
+
+.book-catalog::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+.book-catalog::-webkit-scrollbar-thumb {
+    background: #F75866;
+    border-radius: 10px;
+}
+
+.book {
+    perspective: 1000px;
+    width: 110px;
+    height: 160px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.book:hover {
+    transform: scale(1.08);
+}
+
+.book-cover {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: rotateY(-30deg);
+    transition: all 0.5s ease;
+    background: linear-gradient(135deg, #F75866, #ff8a94);
+    border-radius: 4px 8px 8px 4px;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12px;
+}
+
+.book:hover .book-cover {
+    transform: rotateY(-15deg);
+    box-shadow: 8px 8px 24px rgba(247, 88, 102, 0.3);
+}
+
+.book-spine {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 12px;
+    height: 100%;
+    background: linear-gradient(to right, #d64c59, #F75866);
+    transform: rotateY(90deg) translateZ(-6px) translateX(-6px);
+    border-radius: 3px 0 0 3px;
+}
+
+.book-title {
+    color: white;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 8px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.book-author {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 11px;
+    text-align: center;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

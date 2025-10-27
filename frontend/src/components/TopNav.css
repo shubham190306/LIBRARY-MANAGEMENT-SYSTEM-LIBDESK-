@@ -1,0 +1,126 @@
+.topnav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #FFFFFF; /* White background */
+    padding: 10px 20px;
+    color: black; /* Change color to black for better contrast */
+    height : 10%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.topnav-logo h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.topnav-search {
+    flex: 1;
+    max-width: 400px;
+    margin: 0 20px;
+}
+
+.topnav-search input {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: 1px solid #eee;
+    width: 100%;
+    background-color: #F8F8F8;
+    border: 0px;
+    font-family: sans-serif;
+}
+
+.topnav-greeting {
+    margin-right: 20px;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+.topnav-icons {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    margin-left: 20px;
+    cursor: pointer;
+    position: relative;
+}
+
+.icon i {
+    font-size: 20px;
+}
+
+/* Add some hover effects for the icons */
+.icon i:hover {
+    color: #F75866;
+}
+
+.notifications-dropdown {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    width: 250px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    padding: 10px;
+}
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item span {
+    margin: 0;
+    font-size: 14px;
+    display: block;
+}
+
+.notification-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #F75866;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.read-all-button {
+    text-align: center;
+    padding: 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    margin-top: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #555;
+}
+
+.read-all-button:hover {
+    background-color: #e0e0e0;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+}

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+  <style>
+    .logo-text { font-family: Arial, sans-serif; font-weight: bold; }
+    .book { fill: #2c5282; }
+    .desk { fill: #4a5568; }
+  </style>
+  <g>
+    <path class="book" d="M30,10 L60,10 L60,50 L30,50 C25,50 20,45 20,40 L20,20 C20,15 25,10 30,10 Z" />
+    <path fill="white" d="M25,15 L55,15 L55,45 L25,45 Z" />
+    <line x1="30" y1="20" x2="50" y2="20" stroke="#2c5282" stroke-width="2" />
+    <line x1="30" y1="25" x2="50" y2="25" stroke="#2c5282" stroke-width="2" />
+    <line x1="30" y1="30" x2="50" y2="30" stroke="#2c5282" stroke-width="2" />
+    <line x1="30" y1="35" x2="40" y2="35" stroke="#2c5282" stroke-width="2" />
+  </g>
+  <text x="70" y="35" class="logo-text" font-size="24">LibDesk</text>
+</svg>
