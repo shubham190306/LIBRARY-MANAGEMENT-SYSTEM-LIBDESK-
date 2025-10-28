@@ -5,6 +5,7 @@ import SideNav from './SideNav';
 import TopNav from './TopNav';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 const MembersPage = () => {
   const [members, setMembers] = useState([]);
@@ -46,7 +47,7 @@ const MembersPage = () => {
 
   const fetchMembers = async (page = 1) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/members_page/?page=${page}${searchQuery ? `&search=${searchQuery}` : ''}`);
+      const response = await fetch(`${API_BASE_URL}/members_page/?page=${page}${searchQuery ? `&search=${searchQuery}` : ''}`);
       
       // Check if response is OK before trying to parse JSON
       if (!response.ok) {
@@ -79,7 +80,7 @@ const MembersPage = () => {
     if (!selectedMember) return;
     
     try {
-      const response = await fetch(`http://127.0.0.1:8000/members/`, {
+      const response = await fetch(`${API_BASE_URL}/members/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -158,7 +159,7 @@ const MembersPage = () => {
 
   const handleSettleDebt = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/settle_member_debt/?member_id=${selectedMember.member_id}`, {
+      const response = await fetch(`${API_BASE_URL}/settle_member_debt/?member_id=${selectedMember.member_id}`, {
         method: 'GET',
       });
 

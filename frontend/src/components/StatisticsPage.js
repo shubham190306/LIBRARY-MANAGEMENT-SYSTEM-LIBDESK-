@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import NavBar from './NavBar';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
 
@@ -28,11 +29,11 @@ function StatisticsPage() {
   const fetchStatistics = async () => {
     try {
       // Fetch members data
-      const membersResponse = await axios.get('http://localhost:8000/api/members/');
+      const membersResponse = await axios.get(`${API_BASE_URL}/api/members/`);
       const members = membersResponse.data;
       
       // Fetch issued books data
-      const issuedBooksResponse = await axios.get('http://localhost:8000/api/issued-books/');
+      const issuedBooksResponse = await axios.get(`${API_BASE_URL}/api/issued-books/`);
       const issuedBooks = issuedBooksResponse.data;
       
       // Calculate statistics

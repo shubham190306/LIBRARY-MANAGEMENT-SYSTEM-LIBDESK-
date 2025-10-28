@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody } from 'reactstrap';
 import './MembersBorrowersStats.css';
+import { API_BASE_URL } from '../config';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -36,7 +37,7 @@ const MembersBorrowersStats = () => {
         // Fetch statistics from the API
         const fetchStatistics = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/statistics/');
+                const response = await fetch(`${API_BASE_URL}/statistics/`);
                 if (response.ok) {
                     const data = await response.json();
                     setStatistics({

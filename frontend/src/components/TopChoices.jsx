@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 import './TopChoices.css';
+import { API_BASE_URL } from '../config';
 
 const TopChoices = () => {
     const [books, setBooks] = useState([]);
@@ -12,7 +13,7 @@ const TopChoices = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/books/');
+                const response = await fetch(`${API_BASE_URL}/books/`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -36,7 +37,7 @@ const TopChoices = () => {
 
     const handleIssue = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/issued_books/', {
+            const response = await fetch(`${API_BASE_URL}/issued_books/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -84,7 +85,7 @@ const TopChoices = () => {
 
     const handleReturn = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/issued_books/', {
+            const response = await fetch(`${API_BASE_URL}/issued_books/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

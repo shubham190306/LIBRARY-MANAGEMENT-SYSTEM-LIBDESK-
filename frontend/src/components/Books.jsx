@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 import './Books.css';
 import { useBookContext } from './BookContext';
+import { API_BASE_URL } from '../config';
 
 const Books = () => {
   const [books, setBooks] = useState([]);
@@ -70,7 +71,7 @@ const Books = () => {
 
   const handleIssue = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/issued_books/', {
+      const response = await fetch(`${API_BASE_URL}/issued_books/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,7 +106,7 @@ const Books = () => {
 
   const handleReturn = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/issued_books/', {
+      const response = await fetch(`${API_BASE_URL}/issued_books/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -136,7 +137,7 @@ const Books = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/books/?count=5');
+        const response = await fetch(`${API_BASE_URL}/books/?count=5`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

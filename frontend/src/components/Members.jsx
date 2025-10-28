@@ -13,6 +13,7 @@ import {
 } from "reactstrap";
 import "./Members.css";
 import { useBookContext } from "./BookContext";
+import { API_BASE_URL } from '../config';
 
 const Members = () => {
   const [members, setMembers] = useState([]);
@@ -41,7 +42,7 @@ const Members = () => {
 
   const fetchMembers = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/members/?count=5");
+      const response = await fetch(`${API_BASE_URL}/members/?count=5`);
       const data = await response.json();
       setMembers(data);
     } catch (error) {
@@ -62,7 +63,7 @@ const Members = () => {
     };
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/members/", {
+      const response = await fetch(`${API_BASE_URL}/members/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +92,7 @@ const Members = () => {
   const handleSettleDebt = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/settle_member_debt/?member_id=${selectedMember.member_id}`,
+        `${API_BASE_URL}/settle_member_debt/?member_id=${selectedMember.member_id}`,
         {
           method: "GET",
         }

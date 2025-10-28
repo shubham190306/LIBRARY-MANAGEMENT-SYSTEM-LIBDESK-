@@ -4,6 +4,7 @@ import TopNav from "./TopNav";
 import "./BooksPage.css";
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { API_BASE_URL } from '../config';
 
 const BooksPage = () => {
   const [books, setBooks] = useState([]);
@@ -38,7 +39,7 @@ const BooksPage = () => {
     const delayDebounceFn = setTimeout(() => {
       const fetchBooks = async () => {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/books/?page=${currentPage}${searchQuery ? `&title=${searchQuery}&authors=${searchQuery}` : ''}`);
+          const response = await fetch(`${API_BASE_URL}/books/?page=${currentPage}${searchQuery ? `&title=${searchQuery}&authors=${searchQuery}` : ''}`);
           
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -102,7 +103,7 @@ const BooksPage = () => {
 
   const handleIssue = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/issued_books/", {
+      const response = await fetch(`${API_BASE_URL}/issued_books/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -137,7 +138,7 @@ const BooksPage = () => {
 
   const handleReturn = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/issued_books/", {
+      const response = await fetch(`${API_BASE_URL}/issued_books/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

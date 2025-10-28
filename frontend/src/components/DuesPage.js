@@ -3,6 +3,7 @@ import SideNav from './SideNav';
 import TopNav from './TopNav';
 import { Container, Card, Table, Button, Row, Col } from 'react-bootstrap';
 import './DuesPage.css';
+import { API_BASE_URL } from '../config';
 
 function DuesPage() {
   const [members, setMembers] = useState([]);
@@ -14,7 +15,7 @@ function DuesPage() {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/members_page/`);
+        const response = await fetch(`${API_BASE_URL}/members_page/`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -36,7 +37,7 @@ function DuesPage() {
 
   const handleSettleDues = async (memberId, amount) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/members/${memberId}/settle_dues/`, {
+      const response = await fetch(`${API_BASE_URL}/members/${memberId}/settle_dues/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

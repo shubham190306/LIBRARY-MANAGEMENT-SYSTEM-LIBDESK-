@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, Table } from 'reactstrap';
 import './OverdueBookList.css';
+import { API_BASE_URL } from '../config';
 
 const OverdueBookList = () => {
     const [overdueBooks, setOverdueBooks] = useState([]);
@@ -8,7 +9,7 @@ const OverdueBookList = () => {
     useEffect(() => {
         const fetchOverdueBooks = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/overdue_book_list/?count=4');
+                const response = await fetch(`${API_BASE_URL}/overdue_book_list/?count=4`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

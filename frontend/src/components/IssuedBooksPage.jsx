@@ -4,6 +4,7 @@ import './BooksIssued.css';
 import SideNav from './SideNav';
 import TopNav from './TopNav';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { API_BASE_URL } from '../config';
 
 const IssuedBooksPage = () => {
     const [issuedBooks, setIssuedBooks] = useState([]);
@@ -12,7 +13,7 @@ const IssuedBooksPage = () => {
     // Fetch data from API
     const fetchIssuedBooks = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/issued_books_list/');
+            const response = await fetch(`${API_BASE_URL}/issued_books_list/`);
             if (response.ok) {
                 const data = await response.json();
                 setIssuedBooks(data);
@@ -31,7 +32,7 @@ const IssuedBooksPage = () => {
     // Handle return book
     const handleReturnBook = async (bookId) => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/issued_books/', {
+            const response = await fetch(`${API_BASE_URL}/issued_books/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

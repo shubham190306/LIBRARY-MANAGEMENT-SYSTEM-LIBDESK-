@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, Table, Button } from 'reactstrap';
 import './BooksIssued.css';
+import { API_BASE_URL } from '../config';
 
 const BooksIssued = ({ isPreview = true }) => {
     const [issuedBooks, setIssuedBooks] = useState([]);
@@ -18,8 +19,8 @@ const BooksIssued = ({ isPreview = true }) => {
         try {
             // If it's a preview, limit to 5 entries
             const url = isPreview 
-                ? 'http://127.0.0.1:8000/issued_books_list/?limit=5' 
-                : 'http://127.0.0.1:8000/issued_books_list/';
+                ? `${API_BASE_URL}/issued_books_list/?limit=5` 
+                : `${API_BASE_URL}/issued_books_list/`;
                 
             const response = await fetch(url);
             if (response.ok) {
@@ -36,7 +37,7 @@ const BooksIssued = ({ isPreview = true }) => {
     // Fetch statistics
     const fetchStatistics = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/statistics/');
+            const response = await fetch(`${API_BASE_URL}/statistics/`);
             if (response.ok) {
                 const data = await response.json();
                 setStatistics(data);
@@ -56,7 +57,7 @@ const BooksIssued = ({ isPreview = true }) => {
     // Handle return book
     const handleReturnBook = async (bookId) => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/issued_books/', {
+            const response = await fetch(`${API_BASE_URL}/issued_books/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

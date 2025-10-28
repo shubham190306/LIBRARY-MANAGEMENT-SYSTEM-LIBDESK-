@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Statistics.css'; // Import the CSS file for styling
 import { FaUser, FaBook, FaClipboardList, FaCheckCircle } from 'react-icons/fa';
+import { API_BASE_URL } from '../config';
 
 const Statistics = () => {
   const [statistics, setStatistics] = useState({
@@ -13,7 +14,7 @@ const Statistics = () => {
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/statistics/');
+        const response = await fetch(`${API_BASE_URL}/statistics/`);
         if (response.ok) {
           const data = await response.json();
           setStatistics({

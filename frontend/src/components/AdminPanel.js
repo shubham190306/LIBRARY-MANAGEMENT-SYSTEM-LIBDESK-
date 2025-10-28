@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Tabs, Tab, Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
+import { API_BASE_URL } from '../config';
 
 function AdminPanel() {
   const [key, setKey] = useState('addBook');
@@ -69,13 +70,13 @@ function AdminPanel() {
     }
     try {
       // Get the highest book_id to create a new one
-      const booksResponse = await fetch('http://localhost:8000/api/books/');
+      const booksResponse = await fetch(`${API_BASE_URL}/api/books/`);
       const booksData = await booksResponse.json();
       const highestId = Math.max(...booksData.map(book => book.book_id), 0);
       const newBookId = highestId + 1;
       
       // Create book in BookStock
-      await fetch('http://localhost:8000/api/books/', {
+      await fetch(`${API_BASE_URL}/api/books/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -122,7 +123,7 @@ function AdminPanel() {
       const endDate = memberData.endDate || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       
       // Create member
-      await fetch('http://localhost:8000/api/members/', {
+      await fetch(`${API_BASE_URL}/api/members/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
