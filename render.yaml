@@ -15,11 +15,11 @@ services:
     plan: free
     postDeployCommand: |
       python manage.py migrate --noinput
-  - type: static_site
+  - type: static
     name: library-frontend
     rootDir: frontend
     buildCommand: npm ci && npm run build
-    publishDir: build
+    staticPublishPath: build
     headers:
       - path: /static/*
         name: Cache-Control
