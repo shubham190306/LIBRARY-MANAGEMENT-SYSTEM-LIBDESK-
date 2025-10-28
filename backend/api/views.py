@@ -52,6 +52,17 @@ class BooksListAPI(APIView):
                 formatted_books = []
                 for book in btech_books:
                     book_id = book.get('book_id')
+                    
+                    # Get or create book stock
+                    book_stock, created = BookStock.objects.get_or_create(
+                        book_id=book_id,
+                        defaults={'quantity': 1}  # Default to 1 copy if new
+                    )
+                    
+                    # Count issued copies
+                    issued_count = IssuedBooks.objects.filter(book_id=book_id, status="Issued").count()
+                    available_count = max(0, book_stock.quantity - issued_count)
+                    
                     formatted_book = {
                         'bookID': book_id,
                         'title': book.get('title'),
@@ -65,13 +76,11 @@ class BooksListAPI(APIView):
                         'num_pages': DEFAULT_BOOK_PAGES,
                         'ratings_count': DEFAULT_RATINGS_COUNT,
                         'text_reviews_count': DEFAULT_REVIEWS_COUNT,
+                        'total_copies': book_stock.quantity,
+                        'available_copies': available_count,
+                        'issued_copies': issued_count,
+                        'status': "Available" if available_count > 0 else "Issued"
                     }
-                    
-                    # Check if book is issued
-                    if IssuedBooks.objects.filter(book_id=book_id, status="Issued").exists():
-                        formatted_book['status'] = "Issued"
-                    else:
-                        formatted_book['status'] = "Available"
                     
                     formatted_books.append(formatted_book)
                 
@@ -104,10 +113,21 @@ class BooksListAPI(APIView):
                     fetched_books = response_data.get('message', [])
                     for book in fetched_books:
                         book_id = book.get('bookID')
-                        if IssuedBooks.objects.filter(book_id=book_id, status="Issued").exists():
-                            book['status'] = "Issued"
-                        else:
-                            book['status'] = "Available"
+                        
+                        # Get or create book stock
+                        book_stock, created = BookStock.objects.get_or_create(
+                            book_id=book_id,
+                            defaults={'quantity': 1}
+                        )
+                        
+                        # Count issued copies
+                        issued_count = IssuedBooks.objects.filter(book_id=book_id, status="Issued").count()
+                        available_count = max(0, book_stock.quantity - issued_count)
+                        
+                        book['total_copies'] = book_stock.quantity
+                        book['available_copies'] = available_count
+                        book['issued_copies'] = issued_count
+                        book['status'] = "Available" if available_count > 0 else "Issued"
                         books.append(book)
                     if not fetched_books:
                         break  # Exit if no more books are returned
@@ -167,8 +187,6 @@ class MembersAPI(APIView):
         return Response(serialized_members.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        if not request.user.is_authenticated:
-            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
         serializer = MembersSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -264,9 +282,24 @@ class IssuedBooksAPI(APIView):
         return Response(serializer_issued_book.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        if not request.user.is_authenticated:
-            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
         data = request.data
+        book_id = data.get('book_id')
+        
+        # Check available copies
+        book_stock = BookStock.objects.filter(book_id=book_id).first()
+        if not book_stock:
+            # Auto-create with 1 copy if doesn't exist
+            book_stock = BookStock.objects.create(book_id=book_id, quantity=1)
+        
+        issued_count = IssuedBooks.objects.filter(book_id=book_id, status="Issued").count()
+        available_count = book_stock.quantity - issued_count
+        
+        if available_count <= 0:
+            return Response(
+                {'error': 'No copies available. All copies are currently issued.'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
         serializer = IssuedBooksSerializer(data = data, partial = True)
 
         if serializer.is_valid():
@@ -280,8 +313,6 @@ class IssuedBooksAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request):
-        if not request.user.is_authenticated:
-            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
         book_id = request.data.get('book_id')
         issued_book = IssuedBooks.objects.filter(book_id=book_id, status=BOOK_STATUS_ISSUED).first()
 

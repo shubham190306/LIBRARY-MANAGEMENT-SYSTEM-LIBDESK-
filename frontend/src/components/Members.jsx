@@ -72,17 +72,27 @@ const Members = () => {
       });
 
       if (response.ok) {
-        setSuccessMessage("New Member Added Successfully");
-        fetchMembers(); // Refresh the members list
-        setTimeout(() => {
-          toggleAddMemberModal(); // Close the modal after showing the success message
-        }, 2000); // Delay for 2 seconds
+        document.dispatchEvent(new CustomEvent('show-toast', { 
+          detail: { 
+            type: 'success', 
+            message: 'New Member Added Successfully',
+            title: 'Success'
+          } 
+        }));
+        fetchMembers();
+        toggleAddMemberModal();
         setMemberName('')
         setMemberEmail('')
         setMemberPhone('')
         setEndDate('')
       } else {
-        console.error("Failed to add member");
+        document.dispatchEvent(new CustomEvent('show-toast', { 
+          detail: { 
+            type: 'error', 
+            message: 'Failed to add member',
+            title: 'Error'
+          } 
+        }));
       }
     } catch (error) {
       console.error("Error adding member:", error);
@@ -99,11 +109,23 @@ const Members = () => {
       );
 
       if (response.ok) {
-        alert("Outstanding Settled"); // Show a success alert
-        fetchMembers(); // Refresh the members list to update outstanding debt
-        toggleModal(); // Close the modal
+        document.dispatchEvent(new CustomEvent('show-toast', { 
+          detail: { 
+            type: 'success', 
+            message: 'Outstanding Settled Successfully',
+            title: 'Success'
+          } 
+        }));
+        fetchMembers();
+        toggleModal();
       } else {
-        console.error("Failed to settle debt");
+        document.dispatchEvent(new CustomEvent('show-toast', { 
+          detail: { 
+            type: 'error', 
+            message: 'Failed to settle debt',
+            title: 'Error'
+          } 
+        }));
       }
     } catch (error) {
       console.error("Error settling debt:", error);

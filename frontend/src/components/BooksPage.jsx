@@ -22,6 +22,7 @@ const BooksPage = () => {
   const [bookPublisher, setBookPublisher] = useState('');
   const [bookYear, setBookYear] = useState('');
   const [bookIsbn, setBookIsbn] = useState('');
+  const [bookCopies, setBookCopies] = useState('1');
   const booksPerPage = 20;
   const totalPages = 200; // Fixed total pages
   const pageRange = 5; // Number of pages to display
@@ -92,6 +93,7 @@ const BooksPage = () => {
     setBookPublisher('');
     setBookYear('');
     setBookIsbn('');
+    setBookCopies('1');
   };
 
   const handleCloseModal = () => {
@@ -119,7 +121,13 @@ const BooksPage = () => {
       });
 
       if (response.ok) {
-        alert("Book Issued Successfully");
+        document.dispatchEvent(new CustomEvent('show-toast', { 
+          detail: { 
+            type: 'success', 
+            message: 'Book Issued Successfully',
+            title: 'Success'
+          } 
+        }));
         setBooks((prevBooks) =>
           prevBooks.map((book) =>
             book.bookID === selectedBook.bookID
@@ -129,7 +137,13 @@ const BooksPage = () => {
         );
         handleCloseModal();
       } else {
-        alert("Failed to Issue Book");
+        document.dispatchEvent(new CustomEvent('show-toast', { 
+          detail: { 
+            type: 'error', 
+            message: 'Failed to Issue Book',
+            title: 'Error'
+          } 
+        }));
       }
     } catch (error) {
       console.error("Error issuing book:", error);
@@ -149,7 +163,13 @@ const BooksPage = () => {
       });
 
       if (response.ok) {
-        alert("Book Returned Successfully");
+        document.dispatchEvent(new CustomEvent('show-toast', { 
+          detail: { 
+            type: 'success', 
+            message: 'Book Returned Successfully',
+            title: 'Success'
+          } 
+        }));
         setBooks((prevBooks) =>
           prevBooks.map((book) =>
             book.bookID === selectedBook.bookID
@@ -159,7 +179,13 @@ const BooksPage = () => {
         );
         handleCloseModal();
       } else {
-        alert("Failed to Return Book");
+        document.dispatchEvent(new CustomEvent('show-toast', { 
+          detail: { 
+            type: 'error', 
+            message: 'Failed to Return Book',
+            title: 'Error'
+          } 
+        }));
       }
     } catch (error) {
       console.error("Error returning book:", error);
@@ -177,7 +203,13 @@ const BooksPage = () => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
     } else {
-      alert("Invalid page number");
+      document.dispatchEvent(new CustomEvent('show-toast', { 
+        detail: { 
+          type: 'error', 
+          message: 'Invalid page number',
+          title: 'Error'
+        } 
+      }));
     }
   };
 
@@ -213,6 +245,8 @@ const BooksPage = () => {
                 <th>Author</th>
                 <th>Avg Rating</th>
                 <th>Publisher</th>
+                <th>Total Copies</th>
+                <th>Available</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -229,12 +263,14 @@ const BooksPage = () => {
                     <td>{book.authors}</td>
                     <td>{book.average_rating}</td>
                     <td>{book.publisher}</td>
-                    <td>{book.status}</td>
+                    <td>{book.total_copies || 1}</td>
+                    <td>{book.available_copies !== undefined ? book.available_copies : 1}</td>
+                    <td><span className={`badge ${book.status === 'Available' ? 'badge-success' : 'badge-danger'}`}>{book.status}</span></td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6">No books available</td>
+                  <td colSpan="8">No books available</td>
                 </tr>
               )}
             </tbody>
@@ -335,10 +371,19 @@ const BooksPage = () => {
               <strong>Publisher:</strong> {selectedBook.publisher}
             </p>
             <p>
-              <strong>Status:</strong> {selectedBook.status}
+              <strong>Total Copies:</strong> {selectedBook.total_copies || 1}
+            </p>
+            <p>
+              <strong>Available Copies:</strong> {selectedBook.available_copies !== undefined ? selectedBook.available_copies : 1}
+            </p>
+            <p>
+              <strong>Issued Copies:</strong> {selectedBook.issued_copies || 0}
+            </p>
+            <p>
+              <strong>Status:</strong> <span className={`badge ${selectedBook.status === 'Available' ? 'badge-success' : 'badge-danger'}`}>{selectedBook.status}</span>
             </p>
 
-            {selectedBook.status === "Available" ? (
+            {selectedBook.status === "Available" && (selectedBook.available_copies === undefined || selectedBook.available_copies > 0) ? (
               <>
                 <div>
                   <label>Member ID:</label>
@@ -432,6 +477,17 @@ const BooksPage = () => {
                     id="bookIsbn"
                     value={bookIsbn}
                     onChange={(e) => setBookIsbn(e.target.value)}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="bookCopies">Number of Copies</Label>
+                  <Input
+                    type="number"
+                    id="bookCopies"
+                    value={bookCopies}
+                    onChange={(e) => setBookCopies(e.target.value)}
+                    min="1"
+                    required
                   />
                 </FormGroup>
               </>

@@ -11,4 +11,9 @@ class IssuedBooksSerializer(serializers.ModelSerializer):
     class Meta:
         model = IssuedBooks
         fields = '__all__'
-        read_only_fields = ['issue_date'] 
+        read_only_fields = ['issue_date']
+
+class BookStockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookStock
+        fields = '__all__'

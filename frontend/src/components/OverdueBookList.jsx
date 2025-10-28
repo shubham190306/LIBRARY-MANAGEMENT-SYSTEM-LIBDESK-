@@ -64,7 +64,7 @@ const OverdueBookList = () => {
                                 <td>{book.overdue}</td>
                                 <td>{book.status}</td>
                                 <td>{book.fine}</td>
-                                <td><button className="notification-btn" onClick={() => alert(`Notification sent to member ${book.memberName} about overdue book`)}>Send Notification</button></td>
+                                <td><button className="notification-btn" onClick={() => document.dispatchEvent(new CustomEvent('show-toast', { detail: { type: 'success', message: `Notification sent to ${book.memberName}`, title: 'Notification Sent' } }))}>Send Notification</button></td>
                                     </tr>
                                 ))
                             ) : (

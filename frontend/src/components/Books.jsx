@@ -22,6 +22,7 @@ const Books = () => {
   const [bookPublisher, setBookPublisher] = useState('');
   const [bookYear, setBookYear] = useState('');
   const [bookIsbn, setBookIsbn] = useState('');
+  const [bookCopies, setBookCopies] = useState('1');
 
   const toggleModal = () => {
     setModal(!modal);
@@ -60,6 +61,7 @@ const Books = () => {
     setBookPublisher('');
     setBookYear('');
     setBookIsbn('');
+    setBookCopies('1');
   };
 
   const handleRowClick = (book) => {
@@ -163,6 +165,8 @@ const Books = () => {
             <th>BookId</th>
             <th>Title</th>
             <th>Author</th>
+            <th>Total</th>
+            <th>Available</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -173,6 +177,8 @@ const Books = () => {
                 <td>{book.bookID}</td>
                 <td>{book.title}</td>
                 <td>{book.authors}</td>
+                <td>{book.total_copies || 1}</td>
+                <td>{book.available_copies !== undefined ? book.available_copies : 1}</td>
                 <td>
                   <span className={`status-badge ${book.status === 'Available' ? 'status-available' : 'status-issued'}`}>
                     {book.status === 'Available' ? (
@@ -186,7 +192,7 @@ const Books = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="5" className="no-books-available">
+              <td colSpan="7" className="no-books-available">
                 No Books Available
               </td>
             </tr>
@@ -207,10 +213,12 @@ const Books = () => {
                 <>
                   <p><strong>Author:</strong> {selectedBook.authors}</p>
                   <p><strong>Year:</strong> {selectedBook.publication_date}</p>
-                  <p><strong>Description:</strong> {selectedBook.description}</p>
-                  <p><strong>Status:</strong> {selectedBook.status}</p>
+                  <p><strong>Total Copies:</strong> {selectedBook.total_copies || 1}</p>
+                  <p><strong>Available Copies:</strong> {selectedBook.available_copies !== undefined ? selectedBook.available_copies : 1}</p>
+                  <p><strong>Issued Copies:</strong> {selectedBook.issued_copies || 0}</p>
+                  <p><strong>Status:</strong> <span className={`status-badge ${selectedBook.status === 'Available' ? 'status-available' : 'status-issued'}`}>{selectedBook.status}</span></p>
 
-                  {selectedBook.status === 'Available' ? (
+                  {selectedBook.status === 'Available' && (selectedBook.available_copies === undefined || selectedBook.available_copies > 0) ? (
                     <>
                       <div>
                         <label><b>Member ID: </b></label>
@@ -301,6 +309,17 @@ const Books = () => {
                     id="bookIsbn"
                     value={bookIsbn}
                     onChange={(e) => setBookIsbn(e.target.value)}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="bookCopies">Number of Copies</Label>
+                  <Input
+                    type="number"
+                    id="bookCopies"
+                    value={bookCopies}
+                    onChange={(e) => setBookCopies(e.target.value)}
+                    min="1"
+                    required
                   />
                 </FormGroup>
               </>

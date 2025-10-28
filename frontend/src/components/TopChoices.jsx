@@ -96,11 +96,22 @@ const TopChoices = () => {
             });
 
             if (response.ok) {
-                alert('Book Returned Successfully');
+                document.dispatchEvent(new CustomEvent('show-toast', { 
+                    detail: { 
+                        type: 'success', 
+                        message: 'Book Returned Successfully',
+                        title: 'Success'
+                    } 
+                }));
                 toggleModal();
-                // You may want to refetch the books or update the state here
             } else {
-                alert('Failed to Return Book');
+                document.dispatchEvent(new CustomEvent('show-toast', { 
+                    detail: { 
+                        type: 'error', 
+                        message: 'Failed to Return Book',
+                        title: 'Error'
+                    } 
+                }));
             }
         } catch (error) {
             console.error('Error returning book:', error);
@@ -146,8 +157,11 @@ const TopChoices = () => {
                             <p><strong>Title:</strong> {selectedBook.title}</p>
                             <p><strong>Author:</strong> {selectedBook.authors}</p>
                             <p><strong>Average Rating:</strong> {selectedBook.average_rating}</p>
+                            <p><strong>Total Copies:</strong> {selectedBook.total_copies || 1}</p>
+                            <p><strong>Available Copies:</strong> {selectedBook.available_copies !== undefined ? selectedBook.available_copies : 1}</p>
+                            <p><strong>Issued Copies:</strong> {selectedBook.issued_copies || 0}</p>
 
-                            {selectedBook.status === 'Available' ? (
+                            {selectedBook.status === 'Available' && (selectedBook.available_copies === undefined || selectedBook.available_copies > 0) ? (
                                 <>
                                     <div>
                                         <label>Member ID:</label>
