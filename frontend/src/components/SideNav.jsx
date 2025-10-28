@@ -16,7 +16,7 @@ const SideNav = () => {
   return (
     <div className="sidenav">
       <img src={libdeskLogo} alt='LibDesk Logo' className="sidenav-logo"/>
-      <Link to='/' className={currentPath === '/' ? 'active' : ''}>
+      <Link to='/home' className={currentPath === '/home' ? 'active' : ''}>
         <LuLayoutDashboard />
         <span>Home</span>
       </Link>

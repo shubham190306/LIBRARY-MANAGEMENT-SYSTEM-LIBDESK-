@@ -93,13 +93,19 @@ const MembersPage = () => {
         toggleDeleteConfirmModal();
         toggleModal();
         fetchMembers(currentPage); // Refresh the members list
-        alert('Member deleted successfully');
+        document.dispatchEvent(new CustomEvent('show-toast', { 
+          detail: { type: 'success', message: 'Member deleted successfully', title: 'Success' }
+        }));
       } else {
-        alert('Failed to delete member');
+        document.dispatchEvent(new CustomEvent('show-toast', { 
+          detail: { type: 'error', message: 'Failed to delete member', title: 'Error' }
+        }));
         console.error('Failed to delete member');
       }
     } catch (error) {
-      alert('Error deleting member');
+      document.dispatchEvent(new CustomEvent('show-toast', { 
+        detail: { type: 'error', message: 'Error deleting member', title: 'Error' }
+      }));
       console.error('Error deleting member:', error);
     }
   };
@@ -157,10 +163,15 @@ const MembersPage = () => {
       });
 
       if (response.ok) {
-        alert('Outstanding Settled'); // Show a success alert
+        document.dispatchEvent(new CustomEvent('show-toast', { 
+          detail: { type: 'success', message: 'Outstanding settled', title: 'Success' }
+        }));
         fetchMembers(currentPage); // Refresh the members list to update outstanding debt
         toggleModal(); // Close the modal
       } else {
+        document.dispatchEvent(new CustomEvent('show-toast', { 
+          detail: { type: 'error', message: 'Failed to settle debt', title: 'Error' }
+        }));
         console.error('Failed to settle debt');
       }
     } catch (error) {

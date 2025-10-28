@@ -176,23 +176,16 @@ class MembersAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     def delete(self, request, member_id=None):
-        if not request.user.is_authenticated:
-            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
         try:
+            # Accept member_id from URL, JSON body, or query params
+            if not member_id:
+                member_id = request.data.get('member_id') or request.GET.get('member_id')
             if member_id:
-                # Delete specific member
                 member = Members.objects.get(member_id=member_id)
                 member.delete()
                 return Response({"message": f"Member {member_id} deleted successfully"}, status=status.HTTP_200_OK)
             else:
-                # If no member_id provided in URL, check if it's in the request data
-                member_id = request.data.get('member_id')
-                if member_id:
-                    member = Members.objects.get(member_id=member_id)
-                    member.delete()
-                    return Response({"message": f"Member {member_id} deleted successfully"}, status=status.HTTP_200_OK)
-                else:
-                    return Response({"error": "Member ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": "Member ID is required"}, status=status.HTTP_400_BAD_REQUEST)
         except Members.DoesNotExist:
             logger.warning(f"Member with ID {member_id} not found")
             return Response({"error": f"Member with ID {member_id} not found"}, status=status.HTTP_404_NOT_FOUND)

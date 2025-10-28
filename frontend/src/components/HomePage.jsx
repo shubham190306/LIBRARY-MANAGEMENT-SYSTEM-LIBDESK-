@@ -35,7 +35,6 @@ const HomePage = () => {
               <div className="card">
                 <div className="book-card-header">
                   <h4 className="card-title">Books</h4>
-                  <button className="addButton" onClick={() => window.location.href = '/admin'}>Add Book</button>
                 </div>
                 <Books />
               </div>

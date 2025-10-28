@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import SideNav from "./SideNav";
 import TopNav from "./TopNav";
 import "./BooksPage.css";
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const BooksPage = () => {
@@ -14,6 +14,13 @@ const BooksPage = () => {
   const [returnDate, setReturnDate] = useState("");
   const [customPage, setCustomPage] = useState("");
   const [searchQuery, setSearchQuery] = useState('');
+  const [addBookModal, setAddBookModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [bookTitle, setBookTitle] = useState('');
+  const [bookAuthor, setBookAuthor] = useState('');
+  const [bookPublisher, setBookPublisher] = useState('');
+  const [bookYear, setBookYear] = useState('');
+  const [bookIsbn, setBookIsbn] = useState('');
   const booksPerPage = 20;
   const totalPages = 200; // Fixed total pages
   const pageRange = 5; // Number of pages to display
@@ -54,6 +61,36 @@ const BooksPage = () => {
   const handleRowClick = (book) => {
     setSelectedBook(book);
     setIsModalOpen(true);
+  };
+
+  const toggleAddBookModal = () => {
+    setAddBookModal(!addBookModal);
+    setSuccessMessage('');
+  };
+
+  const handleAddBook = (e) => {
+    e.preventDefault();
+    // Create a temporary book locally (no backend endpoint available)
+    const newBook = {
+      bookID: `TEMP-${Date.now()}`,
+      title: bookTitle,
+      authors: bookAuthor,
+      average_rating: 0,
+      publisher: bookPublisher,
+      publication_date: bookYear,
+      isbn: bookIsbn,
+      status: "Available",
+    };
+    setBooks((prev) => [newBook, ...prev]);
+    setSuccessMessage('New Book Added Successfully');
+    setTimeout(() => {
+      toggleAddBookModal();
+    }, 1500);
+    setBookTitle('');
+    setBookAuthor('');
+    setBookPublisher('');
+    setBookYear('');
+    setBookIsbn('');
   };
 
   const handleCloseModal = () => {
@@ -165,6 +202,7 @@ const BooksPage = () => {
         <div className="books-page-card-main">
           <div className="header-container">
             <h2>Books</h2>
+            <Button className="addButton" onClick={toggleAddBookModal}>Add Book</Button>
           </div>
           <table className="booksPageTable">
             <thead>
@@ -338,6 +376,74 @@ const BooksPage = () => {
           </ModalFooter>
         </Modal>
       )}
+
+      {/* Modal for adding a book */}
+      <Modal isOpen={addBookModal} toggle={toggleAddBookModal}>
+        <ModalHeader toggle={toggleAddBookModal}>Add Book</ModalHeader>
+        <Form onSubmit={handleAddBook}>
+          <ModalBody>
+            {successMessage ? (
+              <p className="success-message">{successMessage}</p>
+            ) : (
+              <>
+                <FormGroup>
+                  <Label for="bookTitle">Title</Label>
+                  <Input
+                    type="text"
+                    id="bookTitle"
+                    value={bookTitle}
+                    onChange={(e) => setBookTitle(e.target.value)}
+                    required
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="bookAuthor">Author</Label>
+                  <Input
+                    type="text"
+                    id="bookAuthor"
+                    value={bookAuthor}
+                    onChange={(e) => setBookAuthor(e.target.value)}
+                    required
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="bookPublisher">Publisher</Label>
+                  <Input
+                    type="text"
+                    id="bookPublisher"
+                    value={bookPublisher}
+                    onChange={(e) => setBookPublisher(e.target.value)}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="bookYear">Publication Year</Label>
+                  <Input
+                    type="number"
+                    id="bookYear"
+                    value={bookYear}
+                    onChange={(e) => setBookYear(e.target.value)}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="bookIsbn">ISBN</Label>
+                  <Input
+                    type="text"
+                    id="bookIsbn"
+                    value={bookIsbn}
+                    onChange={(e) => setBookIsbn(e.target.value)}
+                  />
+                </FormGroup>
+              </>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={toggleAddBookModal}>Cancel</Button>
+            {!successMessage && (
+              <Button color="primary" type="submit">Add Book</Button>
+            )}
+          </ModalFooter>
+        </Form>
+      </Modal>
     </div>
   );
 };

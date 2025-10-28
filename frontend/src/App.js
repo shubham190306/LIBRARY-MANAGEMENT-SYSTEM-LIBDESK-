@@ -17,11 +17,12 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/books" element={<BooksPage />} />
-            <Route path="/members" element={<MembersPage />} />
-            <Route path="/issued" element={<IssuedBooksPage />} />
-            <Route path="/dues" element={<DuesPage />} />
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/home" element={<RequireAuth><HomePage /></RequireAuth>} />
+            <Route path="/books" element={<RequireAuth><BooksPage /></RequireAuth>} />
+            <Route path="/members" element={<RequireAuth><MembersPage /></RequireAuth>} />
+            <Route path="/issued" element={<RequireAuth><IssuedBooksPage /></RequireAuth>} />
+            <Route path="/dues" element={<RequireAuth><DuesPage /></RequireAuth>} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/admin" element={<RequireAuth><AdminPanel /></RequireAuth>} />
           </Routes>

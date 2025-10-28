@@ -36,6 +36,20 @@
     margin: 0; /* Remove default margin for heading */
     color: #333; /* Dark text for the heading */
 }
+
+.addButton {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: solid black 2px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.addButton:hover {
+    background-color: #c4c4c4; /* Darker on hover */
+}
 /* .card {
     margin-bottom: 10px;
     padding: 10px;

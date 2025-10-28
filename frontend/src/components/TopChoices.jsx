@@ -116,9 +116,22 @@ const TopChoices = () => {
                         key={index}
                         onClick={() => handleCardClick(book)}
                     >
-                        <h3 className="book-title">{book.title}</h3>
-                        <p className="book-author">{book.authors}</p>
-                        <p className="book-rating">Rating: {book.average_rating}</p>
+                        <div className="book-cover-placeholder">
+                            <i className="fas fa-book"></i>
+                            <div className="book-index">#{index + 1}</div>
+                        </div>
+                        <div className="book-info">
+                            <h3 className="book-title">{book.title}</h3>
+                            <p className="book-author"><i className="fas fa-user-edit"></i> {book.authors}</p>
+                            <div className="book-rating">{book.average_rating}</div>
+                        </div>
+                        <div className="book-status-badge">
+                            {book.status === 'Available' ? (
+                                <span className="badge-available"><i className="fas fa-check-circle"></i> Available</span>
+                            ) : (
+                                <span className="badge-issued"><i className="fas fa-clock"></i> Issued</span>
+                            )}
+                        </div>
                     </div>
                 ))}
             </div>

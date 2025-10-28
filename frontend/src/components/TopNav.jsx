@@ -6,6 +6,7 @@ import libdeskLogo from '../assets/libdesk-logo.svg';
 const TopNav = ({ searchQuery = "", setSearchQuery = () => {} }) => {
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const [notifications, setNotifications] = useState([
     { id: 1, text: '5 books are overdue today', type: 'overdue' },
     { id: 2, text: '3 new members joined this week', type: 'members' },
@@ -26,11 +27,27 @@ const TopNav = ({ searchQuery = "", setSearchQuery = () => {} }) => {
   
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
+    setShowUserMenu(false);
+  };
+  
+  const toggleUserMenu = () => {
+    setShowUserMenu(!showUserMenu);
+    setShowNotifications(false);
   };
   
   const handleAdminClick = () => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    navigate(isLoggedIn ? '/admin' : '/login');
+    navigate('/admin');
+    setShowUserMenu(false);
+  };
+  
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('username');
+    document.dispatchEvent(new CustomEvent('show-toast', { 
+      detail: { type: 'success', message: 'Logged out successfully', title: 'Success' } 
+    }));
+    navigate('/');
+    setShowUserMenu(false);
   };
   
   const handleNotificationClick = (type) => {
@@ -90,8 +107,20 @@ const TopNav = ({ searchQuery = "", setSearchQuery = () => {} }) => {
             </div>
           )}
         </div>
-        <div className="icon" onClick={handleAdminClick}>
+        <div className="icon" onClick={toggleUserMenu}>
           <i className="fas fa-user"></i>
+          {showUserMenu && (
+            <div className="user-menu-dropdown">
+              <div className="user-menu-item" onClick={handleAdminClick}>
+                <i className="fas fa-cog"></i>
+                <span>Admin Panel</span>
+              </div>
+              <div className="user-menu-item" onClick={handleLogout}>
+                <i className="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
