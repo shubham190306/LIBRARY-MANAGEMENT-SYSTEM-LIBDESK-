@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import NavBar from './NavBar';
+import SideNav from './SideNav';
+import TopNav from './TopNav';
 import { Container, Card, Table, Button, Row, Col } from 'react-bootstrap';
 import './DuesPage.css';
 
 function DuesPage() {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
@@ -75,12 +76,14 @@ function DuesPage() {
   };
 
   return (
-    <div>
-      <NavBar />
-      <Container className="mt-4">
-        <h2 className="mb-4">Outstanding Dues</h2>
-        
-        {loading ? (
+    <div className="booksPageContainer">
+      <SideNav />
+      <div className="books-page-main-content">
+        <TopNav searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <Container className="mt-4">
+          <h2 className="mb-4">Outstanding Dues</h2>
+          
+          {loading ? (
           <p>Loading dues information...</p>
         ) : members.length === 0 ? (
           <Card className="text-center p-4">
@@ -154,7 +157,8 @@ function DuesPage() {
             </Card>
           </Col>
         </Row>
-      </Container>
+        </Container>
+      </div>
     </div>
   );
 }

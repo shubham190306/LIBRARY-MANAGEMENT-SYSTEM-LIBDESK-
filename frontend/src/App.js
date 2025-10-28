@@ -6,6 +6,8 @@ import MembersPage from './components/MembersPage';
 import IssuedBooksPage from './components/IssuedBooksPage';
 import DuesPage from './components/DuesPage';
 import AdminPanel from './components/AdminPanel';
+import LoginPage from './components/LoginPage';
+import RequireAuth from './components/RequireAuth';
 import { ToastProvider } from './components/ToastContext';
 import './App.css';
 
@@ -20,7 +22,8 @@ function App() {
             <Route path="/members" element={<MembersPage />} />
             <Route path="/issued" element={<IssuedBooksPage />} />
             <Route path="/dues" element={<DuesPage />} />
-            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/admin" element={<RequireAuth><AdminPanel /></RequireAuth>} />
           </Routes>
         </div>
       </Router>

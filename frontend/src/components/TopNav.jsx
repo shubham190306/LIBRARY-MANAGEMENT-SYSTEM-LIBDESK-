@@ -29,7 +29,8 @@ const TopNav = ({ searchQuery = "", setSearchQuery = () => {} }) => {
   };
   
   const handleAdminClick = () => {
-    navigate('/admin');
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    navigate(isLoggedIn ? '/admin' : '/login');
   };
   
   const handleNotificationClick = (type) => {

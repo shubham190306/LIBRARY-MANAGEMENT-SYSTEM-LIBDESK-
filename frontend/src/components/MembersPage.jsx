@@ -4,9 +4,12 @@ import './MembersPage.css'; // Ensure this file is updated to match BooksPage.cs
 import SideNav from './SideNav';
 import TopNav from './TopNav';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
 
 const MembersPage = () => {
   const [members, setMembers] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
+  const navigate = useNavigate();
   const [modal, setModal] = useState(false);
   const [addMemberModal, setAddMemberModal] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
@@ -26,6 +29,17 @@ const MembersPage = () => {
   const toggleAddMemberModal = () => {
     setAddMemberModal(!addMemberModal);
     setSuccessMessage(''); // Reset success message when opening the modal
+  };
+  
+  const handleOpenAddMember = () => {
+    if (!isLoggedIn) {
+      document.dispatchEvent(new CustomEvent('show-toast', { 
+        detail: { type: 'error', message: 'Please log in to add a member', title: 'Unauthorized' }
+      }));
+      navigate('/login');
+      return;
+    }
+    toggleAddMemberModal();
   };
   
   const toggleDeleteConfirmModal = () => setDeleteConfirmModal(!deleteConfirmModal);
@@ -92,6 +106,12 @@ const MembersPage = () => {
   
   const handleAddMember = async (e) => {
     e.preventDefault();
+    if (!isLoggedIn) {
+      document.dispatchEvent(new CustomEvent('show-toast', { 
+        detail: { type: 'error', message: 'Login required to add members', title: 'Unauthorized' }
+      }));
+      return;
+    }
     const newMember = {
       member_name: memberName,
       member_email: memberEmail,
@@ -152,6 +172,14 @@ const MembersPage = () => {
     fetchMembers(currentPage);
   }, [searchQuery, currentPage]); // Add searchQuery as dependency
 
+  // Load persisted search query from TopNav/localStorage
+  useEffect(() => {
+    const storedQuery = localStorage.getItem('searchQuery');
+    if (storedQuery) {
+      setSearchQuery(storedQuery);
+    }
+  }, []);
+
   const getPageNumbers = () => {
     const pages = [];
     const startPage = Math.max(1, currentPage - Math.floor(pageSize / 2));
@@ -170,11 +198,11 @@ const MembersPage = () => {
     <div className="membersPageContainer">
       <SideNav />
       <div className="members-page-main-content">
-        <TopNav searchQuery="" setSearchQuery={() => {}} />
+        <TopNav searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <div className='members-page-card-main'>
             <div className='header-container'>
                 <h2>Members</h2>
-                <Button className="addButton" onClick={toggleAddMemberModal}>Add Member</Button>
+                <Button className="addButton" onClick={handleOpenAddMember}>Add Member</Button>
             </div>
           <Table className="membersPageTable" hover>
             <thead>

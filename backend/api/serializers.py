@@ -7,7 +7,7 @@ class MembersSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['joining_date']
 
-class IsssuedBooksSerializer(serializers.ModelSerializer):
+class IssuedBooksSerializer(serializers.ModelSerializer):
     class Meta:
         model = IssuedBooks
         fields = '__all__'

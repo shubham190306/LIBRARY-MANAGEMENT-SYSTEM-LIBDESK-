@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Tabs, Tab, Form, Button, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
 
 function AdminPanel() {
@@ -17,12 +18,29 @@ function AdminPanel() {
     endDate: ''
   });
   const [message, setMessage] = useState({ text: '', type: '' });
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
+  const username = localStorage.getItem('username') || 'Admin';
+  const navigate = useNavigate();
 
   const categories = [
     "Computer Science", "Electrical Engineering", "Mechanical Engineering", 
     "Civil Engineering", "Electronics", "Information Technology", "Chemical Engineering",
     "Biotechnology", "Aerospace Engineering", "Metallurgical Engineering"
   ];
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('username');
+    document.dispatchEvent(new CustomEvent('show-toast', { 
+      detail: { type: 'info', message: 'Logged out', title: 'Logout' }
+    }));
+    setIsLoggedIn(false);
+    navigate('/login', { replace: true });
+  };
 
   const handleBookChange = (e) => {
     const { name, value } = e.target;
@@ -42,6 +60,13 @@ function AdminPanel() {
 
   const addBook = async (e) => {
     e.preventDefault();
+    if (!isLoggedIn) {
+      setMessage({ text: 'Please log in to add books.', type: 'danger' });
+      document.dispatchEvent(new CustomEvent('show-toast', { 
+        detail: { type: 'error', message: 'Login required to add books', title: 'Unauthorized' }
+      }));
+      return;
+    }
     try {
       // Get the highest book_id to create a new one
       const booksResponse = await fetch('http://localhost:8000/api/books/');
@@ -84,6 +109,13 @@ function AdminPanel() {
 
   const addMember = async (e) => {
     e.preventDefault();
+    if (!isLoggedIn) {
+      setMessage({ text: 'Please log in to add members.', type: 'danger' });
+      document.dispatchEvent(new CustomEvent('show-toast', { 
+        detail: { type: 'error', message: 'Login required to add members', title: 'Unauthorized' }
+      }));
+      return;
+    }
     try {
       // Calculate joining date (today) and end date
       const joiningDate = new Date().toISOString().split('T')[0];
@@ -265,6 +297,17 @@ function AdminPanel() {
               <li>Email notification settings</li>
               <li>Backup and restore options</li>
             </ul>
+
+            <hr />
+            <h4>Account</h4>
+            <p>Status: {isLoggedIn ? `Signed in as ${username}` : 'Not signed in'}</p>
+            <div className="d-flex gap-2">
+              {isLoggedIn ? (
+                <Button variant="outline-secondary" onClick={handleLogout}>Logout</Button>
+              ) : (
+                <Button variant="primary" onClick={handleLogin}>Login</Button>
+              )}
+            </div>
           </Tab>
         </Tabs>
       </Container>
