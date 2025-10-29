@@ -284,6 +284,25 @@ class IssuedBooksAPI(APIView):
     def post(self, request):
         data = request.data
         book_id = data.get('book_id')
+        return_date_str = data.get('return_date')
+        
+        # Validate return date
+        if return_date_str:
+            try:
+                from datetime import datetime
+                return_date = datetime.strptime(return_date_str, '%Y-%m-%d').date()
+                today = timezone.now().date()
+                
+                if return_date < today:
+                    return Response(
+                        {'error': 'Return date cannot be in the past. Please select a future date.'}, 
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+            except ValueError:
+                return Response(
+                    {'error': 'Invalid date format. Please use YYYY-MM-DD format.'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
         
         # Check available copies
         book_stock = BookStock.objects.filter(book_id=book_id).first()

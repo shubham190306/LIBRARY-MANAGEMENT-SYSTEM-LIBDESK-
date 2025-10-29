@@ -177,6 +177,8 @@ const TopChoices = () => {
                                             type="date"
                                             value={returnDate}
                                             onChange={(e) => setReturnDate(e.target.value)}
+                                            min={new Date().toISOString().split('T')[0]}
+                                            required
                                         />
                                     </div>
                                 </>

@@ -137,10 +137,11 @@ const BooksPage = () => {
         );
         handleCloseModal();
       } else {
+        const errorData = await response.json();
         document.dispatchEvent(new CustomEvent('show-toast', { 
           detail: { 
             type: 'error', 
-            message: 'Failed to Issue Book',
+            message: errorData.error || 'Failed to Issue Book',
             title: 'Error'
           } 
         }));
@@ -399,6 +400,8 @@ const BooksPage = () => {
                     type="date"
                     value={returnDate}
                     onChange={(e) => setReturnDate(e.target.value)}
+                    min={new Date().toISOString().split('T')[0]}
+                    required
                   />
                 </div>
               </>
